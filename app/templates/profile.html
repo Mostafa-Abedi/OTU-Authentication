@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style0acd.css') }}">
+    <style>
+        #brandingWrapper {
+            background-image: url("{{ url_for('static', filename='illustration/illustration1ba8.jpg') }}") !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            height: 100vh !important;
+            width: 100% !important;
+        }
+    </style>
+</head>
+<body dir="ltr" class="body">
+    <div id="fullPage">
+        <div id="brandingWrapper" class="float"></div>
+        <div id="contentWrapper" class="float">
+            <div id="content">
+                <div id="header">
+                    <img class='logoImage' id='companyLogo' src="{{ url_for('static', filename='logo/logo8988.png') }}" alt='Logo'/>
+                </div>
+                <div id="workArea">
+                    <div id="authArea" class="groupMargin">
+                        <div id="loginArea">        
+                            <div id="loginMessage" class="groupMargin">
+                                Welcome, <strong>{{ user.email }}</strong>!
+                            </div>
+                            <div id="profileInfo">
+                                <p><strong>Student Number:</strong> {{ user.student_number }}</p>
+                                <p><strong>Email:</strong> {{ user.email }}</p>
+                            </div>
+                            <form method="post" action="{{ url_for('main.logout') }}">
+                                {{ form.hidden_tag() if form else '' }}
+                                <button type="submit" class="submit">Logout</button>
+                            </form>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
