@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Security Question</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style0acd.css') }}">
+    <style>
+        #brandingWrapper {
+            background-image: url("{{ url_for('static', filename='illustration/illustration1ba8.jpg') }}") !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            height: 100vh !important;
+            width: 100% !important;
+        }
+    </style>
+</head>
+<body dir="ltr" class="body">
+    <div id="fullPage">
+        <div id="brandingWrapper" class="float"></div>
+        <div id="contentWrapper" class="float">
+            <div id="content">
+                <div id="header">
+                    <img class='logoImage' id='companyLogo' src="{{ url_for('static', filename='logo/logo8988.png') }}" alt='Logo'/>
+                </div>
+                <div id="workArea">
+                    <div id="authArea" class="groupMargin">
+                        <div id="loginArea">        
+                            <div id="loginMessage" class="groupMargin">
+                                <strong>Security Question:</strong><br>
+                                {{ user.security_question }}
+                            </div>
+
+                            <form method="post">
+                                {{ form.hidden_tag() }}
+
+                                <div id="error" class="fieldMargin error smallText">
+                                    {% with messages = get_flashed_messages() %}
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                                <span style="color: red;">{{ message }}</span><br>
+                                            {% endfor %}
+                                        {% endif %}
+                                    {% endwith %}
+                                    {% for field, errors in form.errors.items() %}
+                                        {% for error in errors %}
+                                            <span style="color: red;">{{ error }}</span><br>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+
+                                <div id="formsAuthenticationArea">
+                                    {{ form.answer(class="text fullWidth", placeholder="Enter your answer") }}
+                                    <div id="submissionArea" class="submitMargin">
+                                        {{ form.submit(class="submit") }}
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div id="footerPlaceholder"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
