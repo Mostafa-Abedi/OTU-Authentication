@@ -110,5 +110,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 👨‍💻 Author
 
-Made with ❤️ by [Your Name]  
+Made with ❤️ by Mostafa Abedi 
 For SOFE 4840U: Software & Computer Security @ Ontario Tech University
