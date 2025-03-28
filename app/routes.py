@@ -143,14 +143,14 @@ def setup_security_question():
             db.session.add(sq)
 
         current_user.has_security_questions = True
+        db.session.add(current_user)  # ✅ Ensures the update is tracked
         db.session.commit()
+
         flash("Security questions saved.")
         return redirect(url_for('main.profile'))
 
     return render_template("setup_security_question.html", form=form)
 
-
-    return render_template("setup_security_question.html", form=form)
 
 
 @main.route('/verify/security-question', methods=['GET', 'POST'])
@@ -206,7 +206,8 @@ def verify_security_question():
                 session['question_attempts'] = 0
                 return redirect(url_for('main.verify_security_question'))
 
-    return render_template("verify_security_question.html", form=form, question_text=current_question.question)
+    return render_template("verify_security_question.html", form=form, question_text=current_question.question, user=user)
+
 
 
 @main.route('/auth-method-choice', methods=['GET', 'POST'])
@@ -220,22 +221,29 @@ def auth_method_choice():
         flash("Session expired.")
         return redirect(url_for('main.login'))
 
-    # 🛠️ New logic: if no methods are configured, log them in
-    if not user.has_security_questions and not user.is_verified_2fa:
+    available_methods = []
+    if user.is_verified_2fa:
+        available_methods.append('totp')
+    if user.has_security_questions:
+        available_methods.append('security')
+
+    # If no methods set up, bypass
+    if not available_methods:
         login_user(user)
         session.pop('temp_user_id', None)
         flash("You haven't set up any authentication methods. Go to your profile to set one up.", 'warning')
         return redirect(url_for('main.profile'))
 
     if request.method == 'POST':
-        method = request.form.get('method')
-        if method == 'totp' and user.is_verified_2fa:
+        selected = request.form.get('method')
+        if selected == 'totp' and user.is_verified_2fa:
             return redirect(url_for('main.verify_2fa'))
-        elif method == 'security' and user.has_security_questions:
+        elif selected == 'security' and user.has_security_questions:
             return redirect(url_for('main.verify_security_question'))
         else:
             flash("Invalid or unavailable method selected.")
             return redirect(url_for('main.auth_method_choice'))
 
-    return render_template('auth_method_choice.html', user=user)
+    return render_template('auth_method_choice.html', user=user, available_methods=available_methods)
+
 

@@ -57,16 +57,16 @@
                                 </div>
                                 {% endif %}
 
-                                {% if user.security_question %}
+                                {% if user.has_security_questions %}
                                 <div class="auth-option">
                                     <label>
                                         <input type="radio" name="method" value="security" required>
-                                        Answer Security Question
+                                        Answer Security Questions
                                     </label>
                                 </div>
                                 {% endif %}
 
-                                {% if not user.is_verified_2fa and not user.security_question %}
+                                {% if not user.is_verified_2fa and not user.has_security_questions %}
                                     <p style="color: red;">You haven't set up any authentication methods. <a href="{{ url_for('main.profile') }}">Go to your profile</a> to set one up.</p>
                                 {% else %}
                                     <div id="submissionArea" class="submitMargin">
